@@ -113,7 +113,7 @@ func writeRouteStatsToBuffer(resp *pb.TopRoutesResponse, w *tabwriter.Writer, op
 				dst:         r.GetAuthority(),
 				requestRate: util.GetRequestRate(r.Stats, r.TimeWindow),
 				successRate: util.GetSuccessRate(r.Stats),
-				tlsPercent:  util.GetPercentTls(r.Stats),
+				tlsPercent:  util.GetPercentTLS(r.Stats),
 				latencyP50:  r.Stats.LatencyMsP50,
 				latencyP95:  r.Stats.LatencyMsP95,
 				latencyP99:  r.Stats.LatencyMsP99,
@@ -133,7 +133,7 @@ func writeRouteStatsToBuffer(resp *pb.TopRoutesResponse, w *tabwriter.Writer, op
 		}
 		printRouteTable(table, w, options)
 	case "json":
-		printRouteJson(table, w)
+		printRouteJSON(table, w)
 	}
 }
 
@@ -191,10 +191,10 @@ type jsonRouteStats struct {
 	LatencyMSp50 *uint64  `json:"latency_ms_p50"`
 	LatencyMSp95 *uint64  `json:"latency_ms_p95"`
 	LatencyMSp99 *uint64  `json:"latency_ms_p99"`
-	Tls          *float64 `json:"tls"`
+	TLS          *float64 `json:"tls"`
 }
 
-func printRouteJson(stats []*rowStats, w *tabwriter.Writer) {
+func printRouteJSON(stats []*rowStats, w *tabwriter.Writer) {
 	// avoid nil initialization so that if there are not stats it gets marshalled as an empty array vs null
 	entries := []*jsonRouteStats{}
 	for _, row := range stats {
@@ -209,7 +209,7 @@ func printRouteJson(stats []*rowStats, w *tabwriter.Writer) {
 		entry.LatencyMSp50 = &row.latencyP50
 		entry.LatencyMSp95 = &row.latencyP95
 		entry.LatencyMSp99 = &row.latencyP99
-		entry.Tls = &row.tlsPercent
+		entry.TLS = &row.tlsPercent
 
 		entries = append(entries, entry)
 	}

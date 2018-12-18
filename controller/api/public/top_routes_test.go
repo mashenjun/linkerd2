@@ -11,7 +11,7 @@ import (
 )
 
 type topRoutesExpected struct {
-	expectedStatRpc
+	expectedStatRPC
 	req              pb.TopRoutesRequest  // the request we would like to test
 	expectedResponse pb.TopRoutesResponse // the routes response we expect
 }
@@ -50,7 +50,7 @@ func genRouteSample(route string) *model.Sample {
 func testTopRoutes(t *testing.T, expectations []topRoutesExpected) {
 	for _, exp := range expectations {
 
-		mockProm, fakeGrpcServer, err := newMockGrpcServer(exp.expectedStatRpc)
+		mockProm, fakeGrpcServer, err := newMockGrpcServer(exp.expectedStatRPC)
 		if err != nil {
 			t.Fatalf("Error creating mock grpc server: %s", err)
 		}
@@ -92,7 +92,7 @@ func TestTopRoutes(t *testing.T) {
 		counts := []uint64{123}
 		expectations := []topRoutesExpected{
 			topRoutesExpected{
-				expectedStatRpc: expectedStatRpc{
+				expectedStatRPC: expectedStatRPC{
 					err:              nil,
 					mockPromResponse: routesMetric([]string{"/a"}),
 					expectedPrometheusQueries: []string{
@@ -124,7 +124,7 @@ func TestTopRoutes(t *testing.T) {
 		counts := []uint64{123}
 		expectations := []topRoutesExpected{
 			topRoutesExpected{
-				expectedStatRpc: expectedStatRpc{
+				expectedStatRPC: expectedStatRPC{
 					err:              nil,
 					mockPromResponse: routesMetric([]string{"/a"}),
 					expectedPrometheusQueries: []string{
@@ -156,7 +156,7 @@ func TestTopRoutes(t *testing.T) {
 		counts := []uint64{123}
 		expectations := []topRoutesExpected{
 			topRoutesExpected{
-				expectedStatRpc: expectedStatRpc{
+				expectedStatRPC: expectedStatRPC{
 					err:              nil,
 					mockPromResponse: routesMetric([]string{"/a"}),
 					expectedPrometheusQueries: []string{
@@ -191,7 +191,7 @@ func TestTopRoutes(t *testing.T) {
 		counts := []uint64{123}
 		expectations := []topRoutesExpected{
 			topRoutesExpected{
-				expectedStatRpc: expectedStatRpc{
+				expectedStatRPC: expectedStatRPC{
 					err:              nil,
 					mockPromResponse: routesMetric([]string{"/a"}),
 					expectedPrometheusQueries: []string{

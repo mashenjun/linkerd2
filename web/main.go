@@ -19,7 +19,7 @@ import (
 func main() {
 	addr := flag.String("addr", ":8084", "address to serve on")
 	metricsAddr := flag.String("metrics-addr", ":9994", "address to serve scrapable metrics on")
-	kubernetesApiHost := flag.String("api-addr", ":8085", "host address of kubernetes public api")
+	kubernetesAPIHost := flag.String("api-addr", ":8085", "host address of kubernetes public api")
 	templateDir := flag.String("template-dir", "templates", "directory to search for template files")
 	staticDir := flag.String("static-dir", "app/dist", "directory to search for static files")
 	uuid := flag.String("uuid", "", "unique linkerd install id")
@@ -28,13 +28,13 @@ func main() {
 	controllerNamespace := flag.String("controller-namespace", "linkerd", "namespace in which Linkerd is installed")
 	flags.ConfigureAndParse()
 
-	_, _, err := net.SplitHostPort(*kubernetesApiHost) // Verify kubernetesApiHost is of the form host:port.
+	_, _, err := net.SplitHostPort(*kubernetesAPIHost) // Verify kubernetesApiHost is of the form host:port.
 	if err != nil {
-		log.Fatalf("failed to parse API server address: %s", *kubernetesApiHost)
+		log.Fatalf("failed to parse API server address: %s", *kubernetesAPIHost)
 	}
-	client, err := public.NewInternalClient(*controllerNamespace, *kubernetesApiHost)
+	client, err := public.NewInternalClient(*controllerNamespace, *kubernetesAPIHost)
 	if err != nil {
-		log.Fatalf("failed to construct client for API server URL %s", *kubernetesApiHost)
+		log.Fatalf("failed to construct client for API server URL %s", *kubernetesAPIHost)
 	}
 
 	stop := make(chan os.Signal, 1)

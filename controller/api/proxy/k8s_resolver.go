@@ -31,17 +31,17 @@ func newK8sResolver(k8sDNSZoneLabels []string, controllerNamespace string, k8sAP
 	}
 }
 
-type serviceId struct {
+type serviceID struct {
 	namespace string
 	name      string
 }
 
-func (s serviceId) String() string {
+func (s serviceID) String() string {
 	return fmt.Sprintf("%s.%s", s.name, s.namespace)
 }
 
 func (k *k8sResolver) canResolve(host string, port int) (bool, error) {
-	id, err := k.localKubernetesServiceIdFromDNSName(host)
+	id, err := k.localKubernetesServiceIDFromDNSName(host)
 	if err != nil {
 		return false, err
 	}
@@ -50,7 +50,7 @@ func (k *k8sResolver) canResolve(host string, port int) (bool, error) {
 }
 
 func (k *k8sResolver) streamResolution(host string, port int, listener endpointUpdateListener) error {
-	id, err := k.localKubernetesServiceIdFromDNSName(host)
+	id, err := k.localKubernetesServiceIDFromDNSName(host)
 	if err != nil {
 		log.Error(err)
 		return err
@@ -62,13 +62,13 @@ func (k *k8sResolver) streamResolution(host string, port int, listener endpointU
 		return err
 	}
 
-	listener.SetServiceId(id)
+	listener.SetServiceID(id)
 
 	return k.resolveKubernetesService(id, port, listener)
 }
 
 func (k *k8sResolver) streamProfiles(host string, listener profileUpdateListener) error {
-	id := profileId{
+	id := profileID{
 		namespace: k.controllerNamespace,
 		name:      host,
 	}
@@ -92,7 +92,7 @@ func (k *k8sResolver) stop() {
 	k.profileWatcher.stop()
 }
 
-func (k *k8sResolver) resolveKubernetesService(id *serviceId, port int, listener endpointUpdateListener) error {
+func (k *k8sResolver) resolveKubernetesService(id *serviceID, port int, listener endpointUpdateListener) error {
 	k.endpointsWatcher.subscribe(id, uint32(port), listener)
 
 	select {
@@ -103,11 +103,11 @@ func (k *k8sResolver) resolveKubernetesService(id *serviceId, port int, listener
 	}
 }
 
-// localKubernetesServiceIdFromDNSName returns the name of the service in
+// localKubernetesServiceIDFromDNSName returns the name of the service in
 // "namespace-name/service-name" form if `host` is a DNS name in a form used
 // for local Kubernetes services. It returns nil if `host` isn't in such a
 // form.
-func (k *k8sResolver) localKubernetesServiceIdFromDNSName(host string) (*serviceId, error) {
+func (k *k8sResolver) localKubernetesServiceIDFromDNSName(host string) (*serviceID, error) {
 	hostLabels, err := splitDNSName(host)
 	if err != nil {
 		return nil, err
@@ -149,7 +149,7 @@ func (k *k8sResolver) localKubernetesServiceIdFromDNSName(host string) (*service
 		return nil, fmt.Errorf("not a service: %s", host)
 	}
 
-	return &serviceId{
+	return &serviceID{
 		namespace: hostLabels[1],
 		name:      hostLabels[0],
 	}, nil

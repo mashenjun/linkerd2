@@ -688,7 +688,8 @@ data:
         homeDashboardId: linkerd-top-line
 `
 
-const TlsTemplate = `
+// TLSTemplate provides the base template for the `linkerd install` command, with TLS.
+const TLSTemplate = `
 ### Service Account CA ###
 ---
 kind: ServiceAccount
@@ -802,6 +803,7 @@ spec:
           runAsUser: {{.ControllerUID}}
 `
 
+// ProxyInjectorTemplate provides the template for the `linkerd inject` command.
 const ProxyInjectorTemplate = `
 ---
 ### Proxy Injector Deployment ###

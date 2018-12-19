@@ -27,15 +27,6 @@ a:focus, a:hover, a:visited, a:link, a:active {
   color: white;
 }
 
-.version {
-  max-width: 250px;
-  padding: 24px;
-  font-size: 12px;
-}
-.version .new-version-text {
-  margin-bottom: 12px;
-}
-
 div.octopus-graph-container {
   overflow-x: scroll;
   padding: 16px 0;
